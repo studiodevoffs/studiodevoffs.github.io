@@ -15,6 +15,7 @@
                     <th>Имя</th>
                     <th>Возраст</th>
                     <th>Город</th>
+                    <th>Фото</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,7 +25,7 @@
     </div>
     
     <script>
-        const sheetUrl = 'ВАША_ССЫЛКА_НА_CSV'; // Ссылка на CSV-файл Google Sheets
+        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSA_JZXpuhVYX2IC1lDeMKjcggPwUHrKRvQ2d2CUfSn63HyJhhj9uDhSi_jFWh_uE9al7PiatBJJqyd/pubhtml?gid=0&single=true'; // Ссылка на CSV-файл Google Sheets
         
         fetch(sheetUrl)
             .then(response => response.text())
@@ -35,9 +36,18 @@
                 
                 rows.slice(1).forEach(row => {
                     let tr = document.createElement('tr');
-                    row.forEach(cell => {
+                    row.forEach((cell, index) => {
                         let td = document.createElement('td');
-                        td.textContent = cell;
+                        if (index === 3) { // Столбец с URL изображения
+                            let img = document.createElement('img');
+                            img.src = cell;
+                            img.alt = 'Фото';
+                            img.style.width = '50px';
+                            img.style.height = '50px';
+                            td.appendChild(img);
+                        } else {
+                            td.textContent = cell;
+                        }
                         tr.appendChild(td);
                     });
                     tableBody.appendChild(tr);
