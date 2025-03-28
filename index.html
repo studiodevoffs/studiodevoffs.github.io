@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Публичный профиль</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Публичный профиль</h1>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Возраст</th>
+                    <th>Город</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Данные из Google Sheets будут загружены сюда -->
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        const sheetUrl = 'ВАША_ССЫЛКА_НА_CSV'; // Ссылка на CSV-файл Google Sheets
+        
+        fetch(sheetUrl)
+            .then(response => response.text())
+            .then(csvText => {
+                const rows = csvText.split("\n").map(row => row.split(","));
+                const tableBody = document.querySelector('#data-table tbody');
+                tableBody.innerHTML = '';
+                
+                rows.slice(1).forEach(row => {
+                    let tr = document.createElement('tr');
+                    row.forEach(cell => {
+                        let td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Ошибка загрузки данных:', error));
+    </script>
+</body>
+</html>
