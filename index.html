@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Публичный профиль</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Cactus</title>
+<!--     <link rel="stylesheet" href="styles.css"> -->
     <style>
         @import url('https://unpkg.com/normalize.css') layer(normalize);
 
@@ -327,7 +327,7 @@
 </head>
 <body>
 
-    <h1 class="fluid">the craft of ui</h1>
+    <h1 class="fluid">Find graffity artists</h1>
     <p>
       Unlock the art and science of interface development. This isn’t just about
       pushing pixels or following documentation — it’s about mastering the
@@ -657,5 +657,46 @@ window.addEventListener('resize', resync)
 resync()
 
     </script>
+    <script>
+function getCsvFromGoogleSheet(spreadsheetId, sheetId) {
+  // Формируем URL для CSV
+  const url = `https://docs.google.com/spreadsheets/d/e/2PACX-1vSA_JZXpuhVYX2IC1lDeMKjcggPwUHrKRvQ2d2CUfSn63HyJhhj9uDhSi_jFWh_uE9al7PiatBJJqyd/pubhtml?gid=0&single=true`;
+
+  // Делаем запрос
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.text();  // Возвращаем CSV как текст
+      }
+      throw new Error('Не удалось загрузить CSV данные');
+    })
+    .then(csvData => {
+      // Преобразуем CSV данные в массив объектов
+      const rows = csvData.split('\n');
+      const headers = rows[0].split(',');
+
+      const data = rows.slice(1).map(row => {
+        const values = row.split(',');
+        let obj = {};
+        headers.forEach((header, index) => {
+          obj[header] = values[index];
+        });
+        return obj;
+      });
+
+      // Выводим данные в виде таблицы в консоль
+      console.table(data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
+// Пример использования
+const spreadsheetId = 'your_spreadsheet_id';  // ID вашей таблицы
+const sheetId = 'your_sheet_id';  // ID листа, который хотите получить
+
+getCsvFromGoogleSheet(spreadsheetId, sheetId);
+</script>
 </body>
 </html>
